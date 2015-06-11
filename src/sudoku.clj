@@ -11,16 +11,38 @@
   (not (== 0 (value-at board coord))))
 
 (defn row-values [board coord]
-  nil)
+  (let [[row col] coord]
+    (set (get board row))))
 
 (defn col-values [board coord]
-  nil)
+  (let [[row col] coord]
+    (reduce
+      (fn [bag elim]
+       (conj bag (get elim col)))
+   #{}
+   board)))
 
 (defn coord-pairs [coords]
-  nil)
+  (for [row coords
+        col coords]
+      [row col]))
+
+(defn block-top-left [[x y]]
+  [(* 3 (quot x 3)) (* 3 (quot y 3))])
+
+(defn block-coord-pairs [[x y]]
+  (for [rr [x (+ x 1) (+ x 2)]
+        cc [y (+ y 1) (+ y 2)]]
+        [rr cc]))
 
 (defn block-values [board coord]
-  nil)
+  (let [bl-coor (block-coord-pairs (block-top-left coord))]
+    (reduce
+     (fn [bag ccr]
+       (conj bag (value-at board ccr)))
+     #{}
+     bl-coor)))
+
 
 (defn valid-values-for [board coord]
   nil)
