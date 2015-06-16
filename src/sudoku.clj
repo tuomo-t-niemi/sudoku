@@ -57,11 +57,27 @@
         (set/difference all-values used-values))))
 
 
+(defn containz-zero? [coll]
+  (if (empty? coll)
+    false
+    (if (== 0 (first coll))
+      true
+      (containz-zero? (rest coll)))))
+
 (defn filled? [board]
-  nil)
+  (if (empty? board)
+    true
+    (if (containz-zero? (first board))
+      false
+      (filled? (rest board)))))
 
 (defn rows [board]
-  nil)
+  (reduce
+   (fn [bag bb]
+     (conj bag (set bb)))
+   []
+   board))
+
 
 (defn valid-rows? [board]
   nil)
