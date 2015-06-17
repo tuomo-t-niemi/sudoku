@@ -78,12 +78,19 @@
    []
    board))
 
-
 (defn valid-rows? [board]
   nil)
 
+(defn row-coord-pairs []
+  (for [col [0 1 2 3 4 5 6 7 8]]
+        [0 col]))
+
 (defn cols [board]
-  nil)
+  (reduce
+   (fn [bag coord]
+     (conj bag (col-values board coord)))
+   []
+   (for [col [0 1 2 3 4 5 6 7 8]] [0 col])))
 
 (defn valid-cols? [board]
   nil)
