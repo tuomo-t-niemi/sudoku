@@ -79,10 +79,14 @@
    board))
 
 (defn valid-rows? [board]
-  nil)
+  (reduce
+   (fn [is-valid bb]
+     (and is-valid (empty? (set/difference all-values bb))))
+   true
+   (rows board)))
 
 (defn row-coord-pairs []
-  (for [col [0 1 2 3 4 5 6 7 8]]
+  (for [col (range 0 9)]
         [0 col]))
 
 (defn cols [board]
@@ -90,25 +94,57 @@
    (fn [bag coord]
      (conj bag (col-values board coord)))
    []
-   (for [col [0 1 2 3 4 5 6 7 8]] [0 col])))
+   (for [col (range 0 9)] [0 col])))
 
 (defn valid-cols? [board]
-  nil)
+  (reduce
+   (fn [is-valid bb]
+     (and is-valid (empty? (set/difference all-values bb))))
+   true
+   (cols board)))
+
+(defn all-block-top-left-corners []
+  (for [row [0 3 6]
+        col [0 3 6]]
+    [row col]))
 
 (defn blocks [board]
-  nil)
+  (reduce
+   (fn [bag coord]
+     (conj bag (block-values board coord)))
+   []
+   (all-block-top-left-corners)))
 
 (defn valid-blocks? [board]
-  nil)
+  (reduce
+   (fn [is-valid bb]
+     (and is-valid (empty? (set/difference all-values bb))))
+   true
+   (blocks board)))
 
 (defn valid-solution? [board]
-  nil)
+  (and (valid-rows? board) (valid-cols? board) (valid-blocks? board)))
 
 (defn set-value-at [board coord new-value]
-  nil)
+  (let [[row col] coord]
+    (assoc-in board [row col] new-value)))
+
+(defn all-coords []
+  (for [row (range 0 9)
+        col (range 0 9)]
+      [row col]))
+
+(defn get-empy-pts [board]
+  (reduce
+   (fn [bag coord]
+     (if (== 0 (value-at board coord))
+         (conj bag coord)
+         bag))
+   []
+   (all-coords)))
 
 (defn find-empty-point [board]
-  nil)
+  (first (get-empy-pts board)))
 
 (defn solve [board]
   nil)
